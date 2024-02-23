@@ -1,7 +1,7 @@
 import axios from 'axios';
 import md5 from 'md5';
 
-export const API_URL = `http://api.valantis.store:40000/`;
+export const API_URL = `https://api.valantis.store:41000/`;
 export const createAPI = () => {
   const api = axios.create({
     baseURL: API_URL,
@@ -29,6 +29,21 @@ export const createAPI = () => {
 
     return config;
   });
+
+  // api.interceptors.response.use(
+  //   (response) => {
+  //     //если все ок, то пропускаем
+  //     return response;
+  //   },
+  //   async function (error) {
+  //     const originalRequest = error.config;
+  //     if (error.response.status === 401 && !originalRequest._retry) {
+  //       originalRequest._retry = true;
+  //       return api(originalRequest);
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
 
   return api;
 };

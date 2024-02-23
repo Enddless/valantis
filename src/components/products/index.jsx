@@ -9,6 +9,7 @@ import Spinner from '../spinner';
 
 function Products() {
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesLength, setPagesLength] = useState();
@@ -74,17 +75,17 @@ function Products() {
           </div>
         ) : (
           <>
-            {productsPage &&
-              productsPage.length > 0 &&
-              productsPage.map((item) => {
-                return (
-                  <div className='products__item' key={`${item.product}-${uuidv4()}`}>
-                    <div> Брэнд: {item.brand} </div>
-                    <div> Цена: {item.price} </div>
-                    <div> Название: {item.product} </div>
-                  </div>
-                );
-              })}
+            {productsPage && productsPage.length > 0 && ids ? (
+              productsPage.map((item) => (
+                <div className='products__item' key={`${item.product}-${uuidv4()}`}>
+                  <div> Брэнд: {item.brand} </div>
+                  <div> Цена: {item.price} </div>
+                  <div> Название: {item.product} </div>
+                </div>
+              ))
+            ) : (
+              <div>Извините, ничего не найдено</div>
+            )}
           </>
         )}
       </div>

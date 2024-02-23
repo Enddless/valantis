@@ -54,7 +54,7 @@ export const productsSlice = createSlice({
       })
       .addCase(getbyfilters.fulfilled, (state, action) => {
         state.loadingBrandIDS = false;
-        state.filterIDS = action.payload;
+        state.productsIDS = action.payload;
       })
       .addCase(getbyfilters.rejected, (state) => {
         state.loadingBrandIDS = false;

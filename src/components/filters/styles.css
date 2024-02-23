@@ -32,3 +32,8 @@ fieldset {
   background: white;
   color: #0fa3b1;
 }
+
+.disabled {
+  background: gray;
+  cursor: not-allowed;
+}

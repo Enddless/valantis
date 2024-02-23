@@ -32,7 +32,8 @@ function Filters() {
     }
     dispatch(getbyfilters({ dataParams }))
       .unwrap()
-      .then((response) => setIds(response.result));
+      .then((response) => setIds(response.result))
+      .catch(() => setIds([]));
   };
 
   //для фильтра все, показываем все товары
