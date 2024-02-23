@@ -2,7 +2,6 @@ import axios from 'axios';
 import md5 from 'md5';
 
 export const API_URL = `http://api.valantis.store:40000/`;
-
 export const createAPI = () => {
   const api = axios.create({
     baseURL: API_URL,

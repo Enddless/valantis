@@ -60,7 +60,9 @@ function Products() {
 
   const productsPage = products && products.slice(bottomLine, topLine);
   useEffect(() => {
-    setPagesLength(Math.ceil(products.length / itemsPerPage));
+    if (products) {
+      setPagesLength(Math.ceil(products.length / itemsPerPage));
+    }
   }, [products]);
   return (
     <>
