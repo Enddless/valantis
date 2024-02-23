@@ -1,0 +1,34 @@
+.filters__container {
+  display: flex;
+  margin: 10px 0;
+  column-gap: 10px;
+}
+fieldset {
+  border: none;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+.search {
+  background: #0fa3b1;
+  color: white;
+  outline: none;
+  border: 1px solid #a3cef1;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 200px;
+}
+.seacrh__button {
+  background: #0fa3b1;
+  padding: 5px;
+  width: 100px;
+  border: 1px solid #0fa3b1;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.seacrh__button:hover {
+  background: white;
+  color: #0fa3b1;
+}

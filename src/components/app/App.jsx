@@ -1,7 +1,13 @@
+import Filters from '../filters';
+import Products from '../products';
 import './App.css';
 
 function App() {
-  return <div>App</div>;
+  return (
+    <div>
+      <Products />
+    </div>
+  );
 }
 
 export default App;
