@@ -2,20 +2,45 @@ import { useEffect } from 'react';
 import './styles.css';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchIDSProducts, fetchProducts } from '../../store/thunk/products-thunk';
+import { useSelector } from 'react-redux';
 import Filters from '../filters';
 import Spinner from '../spinner';
 
 function Products() {
-  const dispatch = useDispatch();
-  const [error, setError] = useState(false);
-  //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pagesLength, setPagesLength] = useState();
   const itemsPerPage = 10;
   const [topLine, setTopLine] = useState(10);
   const [bottomLine, setBottomLine] = useState(0);
+  // считываем products
+  const prodArray = useSelector((state) => state.products.productsData);
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    setProducts(prodArray.result);
+  }, [prodArray]);
+
+  const statusLoad = useSelector((state) => state.products.loadingProducts);
+
+  //удаление дубликатов с id
+  const removeDuplicateProducts = (products) => {
+    if (products) {
+      const uniqueProducts = [];
+      const idsSeen = new Set();
+
+      products.forEach((product) => {
+        if (!idsSeen.has(product.id)) {
+          idsSeen.add(product.id);
+          uniqueProducts.push(product);
+        }
+      });
+
+      return uniqueProducts;
+    }
+  };
+
+  // количество страниц, переход по страницам, постраничный вывод
+  const uniqueProducts = removeDuplicateProducts(products);
+  const productsPage = uniqueProducts && uniqueProducts.slice(bottomLine, topLine);
   const clickMore = () => {
     setTopLine(topLine + itemsPerPage);
     setBottomLine(bottomLine + itemsPerPage);
@@ -26,45 +51,12 @@ function Products() {
     setBottomLine(bottomLine - itemsPerPage);
     setCurrentPage((prevPage) => prevPage - 1);
   };
-
-  const [ids, setIds] = useState([]);
-  // считываем products
-  const prodArray = useSelector((state) => state.products.productsData);
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    setProducts(prodArray.result);
-  }, [prodArray]);
-
-  // отправляем запрос на поиск id без параметров конкретного поиска
-  useEffect(() => {
-    const dataParams = {
-      action: 'get_ids',
-      params: { offset: 0, limit: 100 }
-    };
-
-    dispatch(fetchIDSProducts({ dataParams }))
-      .unwrap()
-      .then((response) => setIds(response.result));
-  }, []);
-
-  useEffect(() => {
-    if (ids && ids.length > 0) {
-      const dataProdParams = {
-        action: 'get_items',
-        params: { ids: ids }
-      };
-      dispatch(fetchProducts({ dataProdParams }));
-    }
-  }, [ids]);
-
-  const statusLoad = useSelector((state) => state.products.loadingProducts);
-
-  const productsPage = products && products.slice(bottomLine, topLine);
   useEffect(() => {
     if (products) {
       setPagesLength(Math.ceil(products.length / itemsPerPage));
     }
   }, [products]);
+
   return (
     <>
       <Filters />
@@ -75,16 +67,17 @@ function Products() {
           </div>
         ) : (
           <>
-            {productsPage && productsPage.length > 0 && ids ? (
+            {productsPage && productsPage.length > 0 ? (
               productsPage.map((item) => (
                 <div className='products__item' key={`${item.product}-${uuidv4()}`}>
-                  <div> Брэнд: {item.brand} </div>
+                  <div> Id: {item.id} </div>
+                  <div> Брэнд: {item.brand ? item.brand : 'Без бренда'} </div>
                   <div> Цена: {item.price} </div>
                   <div> Название: {item.product} </div>
                 </div>
               ))
             ) : (
-              <div>Извините, ничего не найдено</div>
+              <div>Извините, ничего не нашлось</div>
             )}
           </>
         )}

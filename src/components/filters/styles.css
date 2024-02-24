@@ -2,27 +2,37 @@
   display: flex;
   margin: 10px 0;
   column-gap: 10px;
+
+  fieldset {
+    border: none;
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    position: relative;
+  }
+  label {
+    cursor: pointer;
+  }
 }
-fieldset {
-  border: none;
-  display: flex;
-  column-gap: 10px;
-  align-items: center;
-}
+
 .search {
-  background: #0fa3b1;
-  color: white;
+  background: transparent;
+  color: #009688;
   outline: none;
-  border: 1px solid #a3cef1;
+  border: 1px solid #065750;
   cursor: pointer;
   border-radius: 5px;
   width: 200px;
+  padding: 5px;
+}
+.search::placeholder {
+  color: white;
 }
 .seacrh__button {
-  background: #0fa3b1;
+  background: #065750;
   padding: 5px;
   width: 100px;
-  border: 1px solid #0fa3b1;
+  border: 1px solid #065750;
   border-radius: 10px;
   color: white;
   cursor: pointer;
@@ -30,10 +40,20 @@ fieldset {
 
 .seacrh__button:hover {
   background: white;
-  color: #0fa3b1;
+  color: #009688;
 }
 
 .disabled {
   background: gray;
   cursor: not-allowed;
+}
+
+.error__input {
+  border: 1px solid red;
+}
+.error {
+  bottom: -20px;
+  color: red;
+  position: absolute;
+  right: 0;
 }

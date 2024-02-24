@@ -10,11 +10,13 @@ import {
 function Filters() {
   const dispatch = useDispatch();
   const [ids, setIds] = useState([]);
-  const [activeFilter, setActiveFilter] = useState();
+  const [activeFilter, setActiveFilter] = useState('all');
   const [activeParams, setActiveParams] = useState('');
+  const [error, setError] = useState('');
 
   // если это фильтры, кроме "все"
   const submitForm = (e) => {
+    setError('');
     e.preventDefault();
     let dataParams = {
       action: 'filter',
@@ -22,7 +24,9 @@ function Filters() {
     };
 
     if (activeFilter === 'brand') {
-      dataParams.params = { brand: activeParams };
+      dataParams.params = {
+        brand: capitalizeFirstLetter(activeParams)
+      };
     } else if (activeFilter === 'product') {
       dataParams.params = { product: activeParams };
     } else if (activeFilter === 'price') {
@@ -36,7 +40,6 @@ function Filters() {
       .catch(() => setIds([]));
   };
 
-  //для фильтра все, показываем все товары
   const submitAll = () => {
     const dataParams = {
       action: 'get_ids',
@@ -47,6 +50,12 @@ function Filters() {
       .unwrap()
       .then((response) => setIds(response.result));
   };
+  //для фильтра все, показываем все товары
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      submitAll();
+    }
+  }, [activeFilter]);
 
   useEffect(() => {
     if (ids && ids.length > 0) {
@@ -54,10 +63,16 @@ function Filters() {
         action: 'get_items',
         params: { ids: ids }
       };
+      setError('');
       dispatch(fetchProducts({ dataProdParams }));
+    } else if (ids.length === 0 && activeParams.length > 0) {
+      setError('Извините, ничего не нашлось');
     }
   }, [ids]);
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   return (
     <form className='filters__container'>
       <fieldset>
@@ -100,16 +115,22 @@ function Filters() {
         />
         <label htmlFor='price'>По цене</label>
       </fieldset>
-      <input
-        type='text'
-        placeholder='Введите параметры'
-        value={activeParams}
-        className='search'
-        onChange={(e) => setActiveParams(e.target.value)}
-      />
-      <button onClick={submitForm} className='seacrh__button'>
-        Поиск
-      </button>
+      <fieldset>
+        <input
+          type='text'
+          placeholder='Введите параметры'
+          value={activeParams}
+          className={error ? 'search error__input' : 'search'}
+          onChange={(e) => {
+            setActiveParams(e.target.value);
+            setError('');
+          }}
+        />
+        <button onClick={submitForm} className='seacrh__button'>
+          Поиск
+        </button>
+        <span className='error'>{error}</span>
+      </fieldset>
     </form>
   );
 }

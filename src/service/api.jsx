@@ -30,20 +30,22 @@ export const createAPI = () => {
     return config;
   });
 
-  // api.interceptors.response.use(
-  //   (response) => {
-  //     //если все ок, то пропускаем
-  //     return response;
-  //   },
-  //   async function (error) {
-  //     const originalRequest = error.config;
-  //     if (error.response.status === 401 && !originalRequest._retry) {
-  //       originalRequest._retry = true;
-  //       return api(originalRequest);
-  //     }
-  //     return Promise.reject(error);
-  //   }
-  // );
+  api.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    async function (error) {
+      if (error.response && error.response.status === 500) {
+        const originalRequest = error.config;
+        if (!originalRequest._retry) {
+          console.log('Error Identifier:', error.response.data.errorId);
+          originalRequest._retry = true;
+          return api(originalRequest);
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
 
   return api;
 };

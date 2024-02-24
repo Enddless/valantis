@@ -1,10 +1,9 @@
-import Filters from '../filters';
 import Products from '../products';
-import './App.css';
+import './styles.css';
 
 function App() {
   return (
-    <div>
+    <div className='app'>
       <Products />
     </div>
   );

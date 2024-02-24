@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   gap: 30px;
   position: relative;
+  margin: 20px 0;
 }
 .products__item {
   display: flex;
@@ -12,17 +13,17 @@
   justify-content: flex-start;
   row-gap: 10px;
   width: calc(var(--index) * 10);
-  height: calc(var(--index) * 8);
-  background: #0fa3b1;
+  height: calc(var(--index) * 10);
+  background: #009688;
   color: white;
   padding: 10px;
   cursor: pointer;
   border: 1px solid #457b9d;
   border-radius: 10px 10px 30px 10px;
-  box-shadow: 4px 4px 8px 0px rgba(22, 106, 170, 0.2);
+  box-shadow: 4px 4px 8px 0px rgb(14 52 14 / 40%);
 }
 .products__item:nth-child(even) {
-  border-radius: 30px 10px 10px 10px;
+  border-radius: 10px 10px 10px 30px;
 }
 .pagination {
   margin: 20px 0;
@@ -32,10 +33,10 @@
   justify-content: center;
 }
 .pages__button {
-  background: #0fa3b1;
+  background: #065750;
   padding: 5px;
   width: 100px;
-  border: 1px solid #0fa3b1;
+  border: 1px solid #065750;
   border-radius: 10px;
   color: white;
   cursor: pointer;
@@ -43,16 +44,19 @@
 
 .pages__button:hover {
   background: white;
-  color: #0fa3b1;
+  color: #009688;
 }
 .current__button {
-  background: #0fa3b1;
+  background: transparent;
   padding: 5px;
-  width: 100px;
-  border: 1px solid #0fa3b1;
+  width: 50px;
+  border: 1px solid #065750;
   border-radius: 10px;
-  color: white;
+  color: #009688;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .spinner__container {
